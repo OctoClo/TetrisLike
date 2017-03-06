@@ -110,6 +110,7 @@ public class Tetromino : MonoBehaviour {
             else
             {
                 transform.position += move[DOWN];
+                manager.CheckIfWeShouldDeleteSomeRow();
                 enabled = false;
                 manager.SpawnNextTetromino();
             }

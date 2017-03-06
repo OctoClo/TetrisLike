@@ -53,6 +53,64 @@ public class GameManager : MonoBehaviour {
             return boardMinos[(int)position.x, (int)position.y];
     }
 
+    private bool IsRowFull (int y)
+    {
+        // For each cell in the given row
+        for (int x = 0; x < boardWidth; x++)
+        {
+            // If it is null, then the row is not full
+            if (boardMinos[x, y] == null)
+                return false;
+        }
+
+        return true;
+    }
+
+    private void DeleteRow (int y)
+    {
+        // For each cell in the given row, destroy and delete the mino ;-;
+        for (int x = 0; x < boardWidth; x++)
+        {
+            Destroy(boardMinos[x, y].gameObject);
+            boardMinos[x, y] = null;
+        }
+    }
+
+    private void MoveRowUp (int y)
+    {
+        for (int x = 0; x < boardWidth; x++)
+        {
+            if (boardMinos[x, y] != null)
+            {
+                boardMinos[x, y + 1] = boardMinos[x, y];
+                boardMinos[x, y] = null;
+                boardMinos[x, y + 1].position += new Vector3(0, 1, 0);
+            }
+        }
+    }
+
+    private void MoveAllRowsUp (int startingRow)
+    {
+        for (int currentRow = startingRow; currentRow >= 0; currentRow--)
+        {
+            MoveRowUp(currentRow);
+            Debug.Log("Starting row : " + startingRow + " - Current row : " + currentRow);
+        }
+    }
+
+    public void CheckIfWeShouldDeleteSomeRow ()
+    {
+        for (int y = 0; y < boardHeight; y++)
+        {
+            if (IsRowFull(y))
+            {
+                DeleteRow(y);
+                MoveAllRowsUp(y - 1);
+                y--;
+            }
+        }
+    }
+
     public void SpawnNextTetromino()
     {
         // Random index
