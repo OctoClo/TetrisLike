@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Tetromino : MonoBehaviour {
 
+    // Not allowed to rotate : Tetromino O
+    public bool allowedToRotate = true;
+
+    // Rotate only twice : Tetrominos I, S and Z
+    public bool rotateTwiceOnly = false;
+    
+    // GameManager instance to call manage move checking
     private GameManager manager;
     
     // List of 3 Vector3 to move the tetromino depending on its direction (LEFT, RIGHT and UP)
@@ -41,7 +48,7 @@ public class Tetromino : MonoBehaviour {
         {
             transform.position += move[LEFT];
 
-            if (!CheckPosition())
+            if (!validPosition())
                 transform.position += move[RIGHT];
         }
             
@@ -51,17 +58,38 @@ public class Tetromino : MonoBehaviour {
         {
             transform.position += move[RIGHT];
 
-            if (!CheckPosition())
+            if (!validPosition())
                 transform.position += move[LEFT];
         }
 
         // Rotate by 90 degres
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            transform.Rotate(0, 0, 90);
+            if (allowedToRotate)
+            {
+                if (rotateTwiceOnly)
+                {
+                    if (transform.rotation.eulerAngles.z >= 90)
+                        transform.Rotate(0, 0, -90);
+                    else
+                        transform.Rotate(0, 0, 90);
+                }
+                else
+                    transform.Rotate(0, 0, 90);
 
-            if (!CheckPosition())
-                transform.Rotate(0, 0, -90);
+                if (!validPosition())
+                {
+                    if (rotateTwiceOnly)
+                    {
+                        if (transform.rotation.eulerAngles.z >= 90)
+                            transform.Rotate(0, 0, -90);
+                        else
+                            transform.Rotate(0, 0, 90);
+                    }
+                    else
+                        transform.Rotate(0, 0, -90);
+                }   
+            }
         }
 
         // Move up or fall if it's been 1 second since last fall
@@ -69,14 +97,14 @@ public class Tetromino : MonoBehaviour {
         {
             transform.position += move[UP];
 
-            if (!CheckPosition())
+            if (!validPosition())
                 transform.position += move[DOWN];
             else
                 previousFallTime = Time.time;
         }
     }
 
-    private bool CheckPosition ()
+    private bool validPosition ()
     {
         foreach (Transform mino in transform)
         {

@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+    public GameObject[] tetrominos;
+
     private int boardWidth = 10;
     private int boardHeigt = 19;
 
 	void Start ()
     {
-		
+        SpawnNextTetromino();
 	}
 	
 	void Update ()
@@ -17,9 +19,17 @@ public class GameManager : MonoBehaviour {
 		
 	}
 
+    private void SpawnNextTetromino()
+    {
+        // Random index
+        int index = Random.Range(0, tetrominos.Length);
+
+        // Spawn a Tetromino at current position with no rotation
+        Instantiate(tetrominos[index], transform.position, Quaternion.identity);
+    }
+
     public bool IsInsideBoard (Vector2 position)
     {
-        Debug.Log("X : " + (int)position.x + " - Y : " + (int)position.y);
         return ((int)position.x >= 0 && (int)position.x < boardWidth && (int)position.y < boardHeigt);
     }
 
