@@ -17,9 +17,9 @@ public class GameManager : MonoBehaviour {
 	void Start ()
     {
         // Spawn the first tetromino
-        SpawnNextTetromino();
+        SpawnNextTetromino();        
 	}
-	
+
 	public void UpdateBoard (Tetromino tetromino)
     {
         // For each cell in the game board
@@ -29,9 +29,11 @@ public class GameManager : MonoBehaviour {
             {
                 // If the cell's mino's parent (i.e. tetromino) equals the one we were given
                 if (boardMinos[x, y] != null)
+                {
                     if (boardMinos[x, y].parent == tetromino.transform)
                         // Delete it, because we're moving that tetromino
                         boardMinos[x, y] = null;
+                }
             }
         }
 
@@ -40,14 +42,14 @@ public class GameManager : MonoBehaviour {
         {
             Vector2 position = Round(mino.position);
 
-            if (position.y > 0)
+            if (position.y >= 0)
                 boardMinos[(int)position.x, (int)position.y] = mino;
         }
     }
 
     public Transform getMinoAtPosition (Vector2 position)
     {
-        if (position.y <= 0)
+        if (position.y < 0)
             return null;
         else
             return boardMinos[(int)position.x, (int)position.y];
@@ -78,6 +80,7 @@ public class GameManager : MonoBehaviour {
 
     private void MoveRowUp (int y)
     {
+        // For each cell in the given row, translate their content into the above row
         for (int x = 0; x < boardWidth; x++)
         {
             if (boardMinos[x, y] != null)
@@ -92,14 +95,12 @@ public class GameManager : MonoBehaviour {
     private void MoveAllRowsUp (int startingRow)
     {
         for (int currentRow = startingRow; currentRow >= 0; currentRow--)
-        {
             MoveRowUp(currentRow);
-            Debug.Log("Starting row : " + startingRow + " - Current row : " + currentRow);
-        }
     }
 
     public void CheckIfWeShouldDeleteSomeRow ()
     {
+        // For each row, if it is full, then delete it and move up all rows below it
         for (int y = 0; y < boardHeight; y++)
         {
             if (IsRowFull(y))
@@ -122,7 +123,13 @@ public class GameManager : MonoBehaviour {
 
     public bool IsInsideBoard (Vector2 position)
     {
+        // /!\ Do not check if it's above 0 in y
         return ((int)position.x >= 0 && (int)position.x < boardWidth && (int)position.y < boardHeight);
+    }
+
+    public void GameOver ()
+    {
+        Application.LoadLevel("GameOver");
     }
 
     public Vector2 Round (Vector2 position)

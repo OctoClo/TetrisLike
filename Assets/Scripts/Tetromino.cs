@@ -34,6 +34,13 @@ public class Tetromino : MonoBehaviour {
 
     void Start()
     {
+        // If the tetromino spawns in an invalid place, it means game over
+        if (!ValidPosition())
+        {
+            Destroy(gameObject);
+            manager.GameOver();
+        }
+
         previousFallTime = Time.time;
     }
 
@@ -50,8 +57,9 @@ public class Tetromino : MonoBehaviour {
             transform.position += move[LEFT];
 
             // If the tetromino is allowed to stay, update the board according to its new position
-            if (validPosition())
+            if (ValidPosition())
                 manager.UpdateBoard(this);
+
             // Else, abort, abort !
             else
                 transform.position += move[RIGHT];
@@ -64,8 +72,9 @@ public class Tetromino : MonoBehaviour {
             transform.position += move[RIGHT];
 
             // If the tetromino is allowed to stay, update the board according to its new position
-            if (validPosition())
+            if (ValidPosition())
                 manager.UpdateBoard(this);
+
             // Else, abort, abort !
             else
                 transform.position += move[LEFT];
@@ -83,8 +92,9 @@ public class Tetromino : MonoBehaviour {
                     transform.Rotate(0, 0, 90);
 
                 // If the tetromino is allowed to stay, update the board according to its new position
-                if (validPosition())
+                if (ValidPosition())
                     manager.UpdateBoard(this);
+
                 // Else, abort, abort !
                 else
                 {
@@ -102,10 +112,9 @@ public class Tetromino : MonoBehaviour {
             transform.position += move[UP];
 
             // If the tetromino is allowed to stay, update the board according to its new position
-            if (validPosition())
-            {
+            if (ValidPosition())
                 manager.UpdateBoard(this);
-            }
+
             // Else, abort, abort ! It means the tetromino has reached the top border, disable it and spawn a new tetromino
             else
             {
@@ -119,7 +128,7 @@ public class Tetromino : MonoBehaviour {
         }
     }
 
-    private bool validPosition ()
+    private bool ValidPosition ()
     {
         // For each mino in the tetromino
         foreach (Transform mino in transform)
@@ -129,10 +138,13 @@ public class Tetromino : MonoBehaviour {
             // Check if it is inside the board
             if (!manager.IsInsideBoard(position))
                 return false;
+
             // And if its parent is us : else it means it's hitting some other tetromino
             else if (manager.getMinoAtPosition(position) != null)
+            {
                 if (manager.getMinoAtPosition(position).parent != transform)
                     return false;
+            } 
         }
 
         return true;
