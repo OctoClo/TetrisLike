@@ -24,7 +24,7 @@ public class Tetromino : MonoBehaviour {
     private float previousFallTime;
 
     // Speed the tetromino is falling at (default : 1 unit per second)
-    private float speed = 1f;
+    private float speed;
 
     void Awake ()
     {
@@ -41,6 +41,10 @@ public class Tetromino : MonoBehaviour {
             manager.GameOver();
         }
 
+        // Get current speed from Game Manager
+        speed = manager.speed;
+
+        // Update first fall time at now
         previousFallTime = Time.time;
     }
 
@@ -49,7 +53,7 @@ public class Tetromino : MonoBehaviour {
         ProcessInput();
 	}
 
-    void ProcessInput ()
+    void ProcessInput()
     {
         // Arrow left = Move left
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -64,7 +68,7 @@ public class Tetromino : MonoBehaviour {
             else
                 transform.position += move[RIGHT];
         }
-            
+
 
         // Arrow right = Move right
         else if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -102,12 +106,12 @@ public class Tetromino : MonoBehaviour {
                         transform.Rotate(0, 0, (transform.rotation.eulerAngles.z >= 90) ? -90 : 90);
                     else
                         transform.Rotate(0, 0, -90);
-                }   
+                }
             }
         }
 
         // Arrow up | n seconds (1 unit / speed) since last fall = Move up
-        else if (Input.GetKeyDown(KeyCode.UpArrow) || Time.time - previousFallTime >= (1 / speed))
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || Time.time - previousFallTime >= (1f / speed))
         {
             transform.position += move[UP];
 
