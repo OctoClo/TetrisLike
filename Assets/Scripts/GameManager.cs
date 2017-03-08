@@ -15,6 +15,11 @@ public class GameManager : MonoBehaviour {
     public Text scoreText;
     public Button pauseButton;
 
+    public Image character;
+    public Sprite[] characters;
+    public Text characterText;    
+    public string[] characterTexts;
+
     // Dimensions of the board
     private static int BOARD_WIDTH = 10;
     private static int BOARD_HEIGHT = 19;
@@ -45,13 +50,25 @@ public class GameManager : MonoBehaviour {
     void Start ()
     {
         // Some initializations
-        speed = 1f;
         score = 0;
         numberOfRowsCleared = 0;
+
+        UpdateCharacter();
 
         // Spawn the first tetromino
         SpawnNextTetromino();        
 	}
+
+    private void UpdateCharacter()
+    {
+        // Random character image
+        int index = Random.Range(0, characters.Length);
+        character.sprite = characters[index];
+
+        // Random character text
+        index = Random.Range(0, characters.Length);
+        characterText.text = "\"" + characterTexts[index] + "\"";
+    }
 
     private void UpdateScore ()
     {
@@ -121,6 +138,7 @@ public class GameManager : MonoBehaviour {
         numberOfRowsCleared++;
         if (IsItTimeToIncreaseSpeed())
             speed++;
+        UpdateCharacter();
 
         return true;
     }
