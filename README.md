@@ -1,21 +1,21 @@
 # TetrisLike
 
-## Présentation
+## Presentation
 
-Ceci est un **projet personnel** que j'ai codé sur mon temps libre en une quinzaine d'heures pour un test technique pour un stage.
+This is a **personal project** made on my spare time in approximately 15 hours. It was a technical test for an internship (which I obtained :)).
 
-L'objectif était de coder un **Tetris** sous **Unity** dans lequel les pièces (appelés tetrominos) "tomberaient" vers le haut, avec différentes fonctionnalités :
-  - Tirage aléatoire d'un tetromino à chaque fois que le tetromino courant touche le "sol"
-  - Gestion du **score** et du **game over**
-  - **Menus** de départ et de pause
-  - Augmentation de la vitesse des pièces toutes les 5 rangées terminées
-  - Intégration d'images et de proverbes anglais aléatoires
+The goal was to code a **Tetris** game with **Unity** in which the pieces (called tetrominos) would go up instead of falling down.
+Here are the various features:
+  - Random pick of the next tetromino
+  - Handling of **score** and **game over**
+  - Start and pause **menus**
+  - Increase of the pieces' speed each 5 rows completed
+  - Images and random proverbs
 
+## Screenshots
 
-## Captures d'écran
+![Screenshot of the menu](img/TetrisLikeMenu.PNG)
 
-![Capture d'écran du menu](img/TetrisLikeMenu.PNG)
+![Screenshot ingame](img/TetrisLike.PNG)
 
-![Capture d'écran en jeu](img/TetrisLike.PNG)
-
-![Capture d'écran du game over](img/TetrisLikeGameOver.PNG)
+![Screenshot of Game Over](img/TetrisLikeGameOver.PNG)
